@@ -1,0 +1,4 @@
+FROM alpine:latest
+RUN apk --no-cache add postgresql16-client
+
+ENTRYPOINT PGPASSWORD="${PGPASSWORD}" pg_dump -d ${PGDATABASE} -t "${PGSCHEMA}.${TABLENAME}" -F p --data-only --column-inserts -h ${PGHOST} -p ${PGPORT} -U ${PGUSER} -f /tmp/${DUMPFILE}

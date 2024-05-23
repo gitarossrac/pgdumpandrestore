@@ -1,0 +1,32 @@
+version: "3.5"
+services:
+  dump:
+    build:
+      context: .
+      dockerfile: Dockerfile.dump
+    environment:
+      PGDATABASE: ${DUMP_DATABASE}
+      PGHOST: ${PGHOST}
+      PGPORT: ${PGPORT}
+      PGUSER: ${PGUSER}
+      PGPASSWORD: ${PGPASSWORD}
+      DUMPFILE: ${DUMPFILE:-${TABLENAME}.sql}
+      PGSCHEMA: ${PGSCHEMA}
+      TABLENAME: ${TABLENAME}
+    volumes:
+      - ./tmp:/tmp
+  restore:
+    build:
+      context: .
+      dockerfile: Dockerfile.restore
+    environment:
+      PGDATABASE: ${RESTORE_DATABASE}
+      PGHOST: ${PGHOST}
+      PGPORT: ${PGPORT}
+      PGUSER: ${PGUSER}
+      PGPASSWORD: ${PGPASSWORD}
+      DUMPFILE: ${DUMPFILE:-${TABLENAME}.sql}
+      PGSCHEMA: ${PGSCHEMA}
+      TABLENAME: ${TABLENAME}
+    volumes:
+      - ./tmp:/tmp
