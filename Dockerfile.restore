@@ -1,4 +1,4 @@
 FROM alpine:latest
 RUN apk --no-cache add postgresql16-client
 
-ENTRYPOINT PGPASSWORD="${PGPASSWORD}" psql -d ${PGDATABASE} -h ${PGHOST} -p ${PGPORT} -U ${PGUSER} -f /tmp/${DUMPFILE}
+ENTRYPOINT PGPASSWORD="${PGPASSWORD}" pg_restore -d ${PGDATABASE} -h ${PGHOST} -p ${PGPORT} -U ${PGUSER} -Fc /tmp/${DUMPFILE}

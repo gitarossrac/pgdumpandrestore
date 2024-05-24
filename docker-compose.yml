@@ -6,12 +6,12 @@ services:
       dockerfile: Dockerfile.dump
     environment:
       PGDATABASE: ${DUMP_DATABASE}
-      PGHOST: ${PGHOST}
-      PGPORT: ${PGPORT}
-      PGUSER: ${PGUSER}
-      PGPASSWORD: ${PGPASSWORD}
-      DUMPFILE: ${DUMPFILE:-${TABLENAME}.sql}
-      PGSCHEMA: ${PGSCHEMA}
+      PGHOST: ${DUMP_PGHOST}
+      PGPORT: ${DUMP_PGPORT}
+      PGUSER: ${DUMP_PGUSER}
+      PGPASSWORD: ${DUMP_PGPASSWORD}
+      PGSCHEMA: ${DUMP_PGSCHEMA}
+      DUMPFILE: ${DUMPFILE:-${TABLENAME}.dump}
       TABLENAME: ${TABLENAME}
     volumes:
       - ./tmp:/tmp
@@ -21,12 +21,19 @@ services:
       dockerfile: Dockerfile.restore
     environment:
       PGDATABASE: ${RESTORE_DATABASE}
-      PGHOST: ${PGHOST}
-      PGPORT: ${PGPORT}
-      PGUSER: ${PGUSER}
-      PGPASSWORD: ${PGPASSWORD}
-      DUMPFILE: ${DUMPFILE:-${TABLENAME}.sql}
-      PGSCHEMA: ${PGSCHEMA}
+      PGHOST: ${RESTORE_PGHOST}
+      PGPORT: ${RESTORE_PGPORT}
+      PGUSER: ${RESTORE_PGUSER}
+      PGPASSWORD: ${RESTORE_PGPASSWORD}
+      PGSCHEMA: ${RESTORE_PGSCHEMA}
+      DUMPFILE: ${DUMPFILE:-${TABLENAME}.dump}
       TABLENAME: ${TABLENAME}
     volumes:
       - ./tmp:/tmp
+    networks:
+      - oip_local
+
+networks:
+  oip_local:
+    driver: bridge
+    name: oip_local
